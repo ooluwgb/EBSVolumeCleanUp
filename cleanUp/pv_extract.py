@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/env python3
 
 import json
 import subprocess
@@ -10,8 +10,10 @@ def get_pv_names():
     Returns:
     list: A list of PV names.
     """
-    # Run kubectl command to get PVs in JSON format
-    result = subprocess.run(['kubectl', 'get', 'pv', '-o', 'json'], stdout=subprocess.PIPE, check=True)
+    try:
+        result = subprocess.run(['kubectl', 'get', 'pv', '-o', 'json'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+    except subprocess.CalledProcessError as exc:
+        raise RuntimeError(f"kubectl failed: {exc.stderr.decode().strip()}")
     pvs = json.loads(result.stdout)
 
     # Process the JSON output to extract PV names

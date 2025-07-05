@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/env python3
 
 import boto3
 import warnings
@@ -18,11 +18,11 @@ def list_all_ebs_volumes(region_name='us-east-1'):
     Returns:
     list: A list of tuples containing EBS volume Name, Volume ID, PV tag, KP tag, and Cluster tag.
     """
-    # Initialize the EC2 client
-    ec2 = boto3.client('ec2', region_name=region_name)
-
-    # Retrieve all EBS volumes
-    volumes = ec2.describe_volumes()
+    try:
+        ec2 = boto3.client('ec2', region_name=region_name)
+        volumes = ec2.describe_volumes()
+    except Exception as exc:
+        raise RuntimeError(f"Unable to list volumes: {exc}")
 
     # Extract required details
     volume_details = []

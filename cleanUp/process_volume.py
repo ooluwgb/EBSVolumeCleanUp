@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/env python3
 
 import sys
 import os
@@ -12,11 +12,11 @@ def find_unmatched_volumes():
     Returns:
     list: A list of tuples containing unmatched AWS volume details.
     """
-    # Get all EBS volumes from AWS with their details
-    aws_volumes = list_all_ebs_volumes()
-
-    # Get PV names from the Kubernetes cluster
-    pv_names = get_pv_names()
+    try:
+        aws_volumes = list_all_ebs_volumes()
+        pv_names = get_pv_names()
+    except Exception as exc:
+        raise RuntimeError(f"Failed to gather volume information: {exc}")
 
     # Find unmatched volumes
     unmatched_volumes = [
