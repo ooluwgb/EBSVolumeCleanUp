@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/env python3
 
 import subprocess
 import sys
@@ -6,6 +6,7 @@ import json
 import os
 import argparse
 from process_volume import find_unmatched_volumes
+from preflight import run_checks
 
 # Determine the directory where main.py is located
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -58,6 +59,7 @@ def parse_main_arguments():
     return parser
 
 if __name__ == '__main__':
+    run_checks()
     # Parse and validate arguments
     parser = parse_main_arguments()
     args = parser.parse_args()
